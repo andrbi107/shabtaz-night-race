@@ -1,8 +1,8 @@
 // شب‌تاز: مسابقه شبانه — service worker
-const CACHE = 'shabtaz-v1';
+const CACHE = 'shabtaz-v2';
 const ASSETS = [
   './',
-  './index.html',
+  './index.html', './mobile-ux.js',
   './styles.css',
   './main.js',
   './manifest.json',

@@ -23,6 +23,10 @@ var CFG = {
   pBrake: 0.245,
   pFriction: 0.991,
   pTurn: 0.050,         // base steer (rad/frame)
+  nitroMax: 100,        // v0.0.2 — rechargeable nitro boost
+  nitroDrain: 0.83,     // per frame @60fps → ~2s full use
+  nitroRecharge: 0.21,  // per frame → ~8s full recharge
+  nitroMult: 1.55,      // top-speed multiplier while active
   aiCount: 3
 };
 
@@ -163,7 +167,7 @@ var state = {
   cam: { x: 0, y: 0 },
   shake: 0
 };
-var input = { left: false, right: false, accel: false, brake: false };
+var input = { left: false, right: false, accel: false, brake: false, nitro: false };
 var player = null, ais = [];
 
 var AI_DEFS = [
@@ -179,7 +183,8 @@ function makeCar(o) {
     lap: 0, idx: 0, progress: 0, lateral: 0,
     color: '#fff', name: '', isAI: false, baseSpeed: 0,
     trail: [], finished: false, finishTime: 0,
-    lapStartTime: 0, position: 0
+    lapStartTime: 0, position: 0,
+    nitro: 100, nitroActive: false
   }, o);
 }
 
@@ -229,7 +234,17 @@ function update() {
   if (input.accel) player.speed += CFG.pAccel;
   else             player.speed *= CFG.pFriction;
   if (input.brake) player.speed -= CFG.pBrake;
-  player.speed = clamp(player.speed, 0, CFG.pMax);
+  // v0.0.2 — nitro boost: raises the top-speed ceiling while fuel lasts
+  var effMax = CFG.pMax;
+  if (input.nitro && player.nitro > 0 && player.speed > 0.05) {
+    player.nitroActive = true;
+    player.nitro = Math.max(0, player.nitro - CFG.nitroDrain);
+    effMax = CFG.pMax * CFG.nitroMult;
+  } else {
+    player.nitroActive = false;
+    player.nitro = Math.min(CFG.nitroMax, player.nitro + CFG.nitroRecharge);
+  }
+  player.speed = clamp(player.speed, 0, effMax);
   if (player.speed < 0.01) player.speed = 0;
   player.x += Math.cos(player.heading) * player.speed;
   player.y += Math.sin(player.heading) * player.speed;
@@ -261,6 +276,7 @@ function update() {
     player.speed *= 0.58;                      // bounce-slow
     state.shake = Math.max(state.shake, 5);
     beep(130, 0.05);
+    if (window.MUX) MUX.hit();
   }
 
   // ---- AI: follow centerline at target speed ----
@@ -306,7 +322,7 @@ function onLap(car) {
       if (state.bestLap === null || lt < state.bestLap) state.bestLap = lt;
     }
     car.lapStartTime = state.raceTime;
-    if (car === player) beep(660, 0.14);
+    if (car === player) { beep(660, 0.14); if (window.MUX) MUX.bump(); }
   }
   if (car === player && car.lap >= CFG.laps) finishRace();
 }
@@ -342,6 +358,7 @@ function computePositions() {
 // ============================================================
 function finishRace() {
   state.mode = 'finished';
+  if (window.MUX) MUX.over();
   document.getElementById('frame').setAttribute('data-mode', 'finished');
   var totalTime = state.raceTime;
   var bestLap = state.bestLap;
@@ -613,6 +630,13 @@ function updateHUD() {
   document.getElementById('posBox').textContent = 'موقعیت: ' + fa(player.position) + '/' + fa(4);
   document.getElementById('raceTime').textContent = formatTime(state.raceTime);
   document.getElementById('bestLap').textContent = 'بهترین دور: ' + (state.bestLap !== null ? formatTime(state.bestLap) : '—');
+  // v0.0.2 — nitro fuel bar
+  var nb = document.getElementById('nitroBar');
+  if (nb && player) {
+    var pct = Math.round((player.nitro / CFG.nitroMax) * 100);
+    nb.style.width = pct + '%';
+    nb.style.opacity = player.nitroActive ? '1' : '0.7';
+  }
 }
 
 // ============================================================
@@ -761,7 +785,8 @@ var KEYMAP = {
   ArrowLeft: 'left', KeyA: 'left',
   ArrowRight: 'right', KeyD: 'right',
   ArrowUp: 'accel', KeyW: 'accel',
-  ArrowDown: 'brake', KeyS: 'brake'
+  ArrowDown: 'brake', KeyS: 'brake',
+  ShiftLeft: 'nitro', ShiftRight: 'nitro', KeyN: 'nitro'
 };
 document.addEventListener('keydown', function (e) {
   var tag = e.target && e.target.tagName;
@@ -793,6 +818,7 @@ bindHold('btnLeft', 'left');
 bindHold('btnRight', 'right');
 bindHold('btnAccel', 'accel');
 bindHold('btnBrake', 'brake');
+bindHold('btnNitro', 'nitro');
 
 document.getElementById('btnPause').addEventListener('click', function () {
   if (state.mode === 'playing') showPause();

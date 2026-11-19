@@ -12,6 +12,14 @@
 <link rel="icon" href="icon.svg">
 <title>شب‌تاز: مسابقه شبانه</title>
 <link rel="stylesheet" href="styles.css">
+<style>
+  /* v0.0.2 — nitro fuel bar + nitro button */
+  #nitroWrap { display:flex; align-items:center; gap:6px; position:absolute; top: calc(14px + 2 * clamp(38px, 6vw, 50px)); right: 12px; }
+  #nitroTrack { width:70px; height:8px; background:rgba(255,255,255,.14); border-radius:4px; overflow:hidden; }
+  #nitroBar { width:100%; height:100%; background:linear-gradient(90deg,#ffb62e,#ff7a3a); transition:width .08s linear,opacity .15s; }
+  .tbtn.pedal.nitro { background:rgba(255,182,46,.18); color:#ffd27a; border-color:rgba(255,182,46,.5); }
+  .tbtn.pedal.nitro.active { background:rgba(255,182,46,.42); color:#fff; }
+</style>
 </head>
 <body>
 <div id="stage">
@@ -28,6 +36,7 @@
         <div id="bestLap" class="sub">بهترین دور: —</div>
       </div>
       <div id="lapBox" class="hud-chip">دور ۱/۳</div>
+      <div id="nitroWrap" class="hud-chip"><span class="sub">نیترو</span><div id="nitroTrack"><div id="nitroBar"></div></div></div>
     </div>
 
     <!-- Touch / pointer controls -->
@@ -39,6 +48,7 @@
       <div class="pad right-pad">
         <button class="tbtn pedal accel" id="btnAccel" aria-label="گاز">▲</button>
         <button class="tbtn pedal brake" id="btnBrake" aria-label="ترمز">▼</button>
+        <button class="tbtn pedal nitro" id="btnNitro" aria-label="نیترو">⚡</button>
       </div>
     </div>
 
@@ -58,7 +68,7 @@
     <p class="desc">هر روز یک مسیر؛ امروز رو با رقیب‌های امروز مسابقه بده.</p>
     <div id="bestToday" class="best-today hide"></div>
     <button id="btnPlay" class="btn-go">شروع مسابقه</button>
-    <p class="hint">جهت‌دهی: ◀ ▶ یا A/D · گاز: ▲ یا W · ترمز: ▼ یا S · توقف: P · صدا: M</p>
+    <p class="hint">جهت‌دهی: ◀ ▶ یا A/D · گاز: ▲ یا W · ترمز: ▼ یا S · نیترو: ⚡ یا N/Shift · توقف: P · صدا: M</p>
   </div>
 </section>
 
@@ -91,7 +101,8 @@
 
 <noscript><p class="nojs">برای بازی، جاوااسکریپت را فعال کنید.</p></noscript>
 
-<script src="main.js"></script>
+<script src="mobile-ux.js"></script>
+  <script src="main.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
