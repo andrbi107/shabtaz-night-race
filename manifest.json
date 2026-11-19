@@ -1,0 +1,16 @@
+{
+  "name": "شب‌تاز: مسابقه شبانه",
+  "short_name": "شب‌تاز",
+  "description": "هر روز یک مسیر نئونی؛ امروز رو با رقیب‌های امروز مسابقه بده.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0a0820",
+  "theme_color": "#0a0820",
+  "lang": "fa",
+  "dir": "rtl",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

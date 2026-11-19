@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0820">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="شب‌تاز: مسابقه شبانه — هر روز یک مسیر نئونی، یک مسابقه‌ی واقعی با رقیب‌های امروز.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg">
+<title>شب‌تاز: مسابقه شبانه</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="stage">
+  <div id="frame" data-mode="menu">
+    <canvas id="game" width="1600" height="900" aria-label="صفحه‌ی مسابقه‌ی شب‌تاز"></canvas>
+
+    <!-- HUD overlay (only during countdown/playing/paused) -->
+    <div id="hud">
+      <button id="btnPause" class="hud-btn" aria-label="توقف بازی">⏸</button>
+      <button id="btnMute" class="hud-btn mute" aria-label="صدا">🔊</button>
+      <div id="posBox" class="hud-chip">موقعیت: —/۴</div>
+      <div id="timeBox" class="hud-chip center">
+        <div id="raceTime">۰۰:۰۰.۰۰</div>
+        <div id="bestLap" class="sub">بهترین دور: —</div>
+      </div>
+      <div id="lapBox" class="hud-chip">دور ۱/۳</div>
+    </div>
+
+    <!-- Touch / pointer controls -->
+    <div id="touchCtl">
+      <div class="pad left-pad">
+        <button class="tbtn steer" id="btnLeft" aria-label="چپ">◀</button>
+        <button class="tbtn steer" id="btnRight" aria-label="راست">▶</button>
+      </div>
+      <div class="pad right-pad">
+        <button class="tbtn pedal accel" id="btnAccel" aria-label="گاز">▲</button>
+        <button class="tbtn pedal brake" id="btnBrake" aria-label="ترمز">▼</button>
+      </div>
+    </div>
+
+    <!-- Mini-map -->
+    <canvas id="mini" width="240" height="180" aria-label="نقشه‌ی کوچک مسیر"></canvas>
+  </div>
+  <div id="rotHint">📱 برای تجربه‌ی بهتر، گوشی را بچرخانید</div>
+</div>
+
+<!-- Start screen -->
+<section id="screenStart" class="screen">
+  <div class="card">
+    <div class="checker"></div>
+    <h1>شب‌تاز</h1>
+    <p class="subtitle">مسابقه شبانه</p>
+    <p class="date" id="todayDate">…</p>
+    <p class="desc">هر روز یک مسیر؛ امروز رو با رقیب‌های امروز مسابقه بده.</p>
+    <div id="bestToday" class="best-today hide"></div>
+    <button id="btnPlay" class="btn-go">شروع مسابقه</button>
+    <p class="hint">جهت‌دهی: ◀ ▶ یا A/D · گاز: ▲ یا W · ترمز: ▼ یا S · توقف: P · صدا: M</p>
+  </div>
+</section>
+
+<!-- Pause screen -->
+<section id="screenPause" class="screen hide">
+  <div class="card">
+    <div class="checker"></div>
+    <h2>توقف</h2>
+    <button id="btnResume" class="btn-go">ادامه</button>
+    <button id="btnQuit" class="btn-alt">خروج به منو</button>
+    <p class="hint">P یا Escape هم بازی را ادامه می‌دهد.</p>
+  </div>
+</section>
+
+<!-- Finish screen -->
+<section id="screenFinish" class="screen hide">
+  <div class="card">
+    <div class="checker"></div>
+    <h2 id="finishTitle">پایان مسابقه</h2>
+    <div id="finishRecord" class="record hide"></div>
+    <ol id="positions"></ol>
+    <div class="stats">
+      <div><b id="finishTotal">—</b><span>زمان کل</span></div>
+      <div><b id="finishBest">—</b><span>بهترین دور</span></div>
+    </div>
+    <button id="btnRetry" class="btn-go">دوباره</button>
+    <button id="btnHome" class="btn-alt">منو</button>
+  </div>
+</section>
+
+<noscript><p class="nojs">برای بازی، جاوااسکریپت را فعال کنید.</p></noscript>
+
+<script src="main.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>
