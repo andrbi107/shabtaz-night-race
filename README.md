@@ -2,10 +2,10 @@
 
 > یک مسابقه‌ی آرکید نئون top-down با مسیر procedural روزانه و سه رقیب ghost deterministic — PWA با Vanilla JS.
 
-[![Version](https://img.shields.io/badge/version-v0.0.2-blue)](https://github.com/andrbi107/shabtaz-night-race/releases/tag/v0.0.2) [![PWA](https://img.shields.io/badge/PWA-installable-purple)](https://andrbi107.github.io/shabtaz-night-race/) [![No deps](https://img.shields.io/badge/dependencies-none-success)](https://github.com/andrbi107/shabtaz-night-race) [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+[![Version](https://img.shields.io/badge/version-v0.0.3-blue)](https://github.com/andrbi107/shabtaz-night-race/releases/tag/v0.0.3) [![PWA](https://img.shields.io/badge/PWA-installable-purple)](https://andrbi107.github.io/shabtaz-night-race/) [![No deps](https://img.shields.io/badge/dependencies-none-success)](https://github.com/andrbi107/shabtaz-night-race) [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 🎮 **[بازی کن](https://andrbi107.github.io/shabtaz-night-race/)** — نسخه‌ی آنلاین روی GitHub Pages
-📦 **[مخزن گیت‌هاب](https://github.com/andrbi107/shabtaz-night-race)** · 🏷️ **[Release v0.0.2](https://github.com/andrbi107/shabtaz-night-race/releases/tag/v0.0.2)**
+📦 **[مخزن گیت‌هاب](https://github.com/andrbi107/shabtaz-night-race)** · 🏷️ **[Release v0.0.3](https://github.com/andrbi107/shabtaz-night-race/releases/tag/v0.0.3)**
 
 ---
 
@@ -14,6 +14,12 @@
 **شب‌تاز** — nitro boost با شارژ مجدد: دکمه‌ی ⚡ روی صفحه (و کلید N/Shift)، نوار سوخت در HUD، سقف سرعت را ۱.۵۵× بالا می‌برد (~۲s استفاده، ~۸s شارژ). haptic روی wall/lap/finish.
 
 **همه‌ی بازی‌ها** — `mobile-ux.js` مشترک (haptics/install prompt/version stamp) + cache sw.js به v2.
+
+---
+
+## تغییرات v0.0.3 (جدید)
+
+**شب‌تاز** — mini-map از روی دکمه‌های فرمان جابجا شد (به گوشه‌ی بالا-چپ)؛ بازی روی موبایل قابل‌بازی شد.
 
 ---
 
