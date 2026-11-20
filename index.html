@@ -19,6 +19,16 @@
   #nitroBar { width:100%; height:100%; background:linear-gradient(90deg,#ffb62e,#ff7a3a); transition:width .08s linear,opacity .15s; }
   .tbtn.pedal.nitro { background:rgba(255,182,46,.18); color:#ffd27a; border-color:rgba(255,182,46,.5); }
   .tbtn.pedal.nitro.active { background:rgba(255,182,46,.42); color:#fff; }
+  /* v0.0.5 — per-lap splits on the finish screen */
+  #lapsBlock { margin: 10px 0 4px; width: 100%; text-align: center; }
+  #lapsBlock .laps-head { color: var(--cyan, #46e6ff); font-weight: 700; font-size: 14px; margin-bottom: 4px; letter-spacing: .5px; }
+  #lapsList { list-style: none; margin: 0 auto; padding: 0; max-width: 260px; display: flex; flex-direction: column; gap: 3px; }
+  #lapsList li { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,.06); font-size: 14px; }
+  #lapsList li.best { background: rgba(255,182,46,.18); border: 1px solid rgba(255,182,46,.45); }
+  #lapsList .lap-n { color: #c9caf0; }
+  #lapsList .lap-t { color: #fff; font-variant-numeric: tabular-nums; font-weight: 700; }
+  #lapsList .lap-star { color: #ffd75e; font-size: 14px; }
+  #lapsBlock.hide { display: none; }
 </style>
 </head>
 <body>
@@ -90,6 +100,10 @@
     <h2 id="finishTitle">پایان مسابقه</h2>
     <div id="finishRecord" class="record hide"></div>
     <ol id="positions"></ol>
+    <div id="lapsBlock" class="hide">
+      <div class="laps-head">زمان هر دور</div>
+      <ol id="lapsList"></ol>
+    </div>
     <div class="stats">
       <div><b id="finishTotal">—</b><span>زمان کل</span></div>
       <div><b id="finishBest">—</b><span>بهترین دور</span></div>
@@ -101,7 +115,9 @@
 
 <noscript><p class="nojs">برای بازی، جاوااسکریپت را فعال کنید.</p></noscript>
 
-<script src="mobile-ux.js"></script>
+<script src="vendor/howler.min.js"></script>
+  <script src="mobile-ux.js"></script>
+  <script src="gamekit.js"></script>
   <script src="main.js"></script>
 <script>
   if ('serviceWorker' in navigator) {

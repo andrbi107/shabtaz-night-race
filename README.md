@@ -2,10 +2,10 @@
 
 > یک مسابقه‌ی آرکید نئون top-down با مسیر procedural روزانه و سه رقیب ghost deterministic — PWA با Vanilla JS.
 
-[![Version](https://img.shields.io/badge/version-v0.0.3-blue)](https://github.com/andrbi107/shabtaz-night-race/releases/tag/v0.0.3) [![PWA](https://img.shields.io/badge/PWA-installable-purple)](https://andrbi107.github.io/shabtaz-night-race/) [![No deps](https://img.shields.io/badge/dependencies-none-success)](https://github.com/andrbi107/shabtaz-night-race) [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+[![Version](https://img.shields.io/badge/version-v0.0.4-blue)](https://github.com/andrbi107/shabtaz-night-race/releases/tag/v0.0.4) [![PWA](https://img.shields.io/badge/PWA-installable-purple)](https://andrbi107.github.io/shabtaz-night-race/) [![deps](https://img.shields.io/badge/deps-Howler.js_local-blueviolet)](https://github.com/andrbi107/shabtaz-night-race) [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 🎮 **[بازی کن](https://andrbi107.github.io/shabtaz-night-race/)** — نسخه‌ی آنلاین روی GitHub Pages
-📦 **[مخزن گیت‌هاب](https://github.com/andrbi107/shabtaz-night-race)** · 🏷️ **[Release v0.0.3](https://github.com/andrbi107/shabtaz-night-race/releases/tag/v0.0.3)**
+📦 **[مخزن گیت‌هاب](https://github.com/andrbi107/shabtaz-night-race)** · 🏷️ **[Release v0.0.4](https://github.com/andrbi107/shabtaz-night-race/releases/tag/v0.0.4)**
 
 ---
 
@@ -17,7 +17,15 @@
 
 ---
 
-## تغییرات v0.0.3 (جدید)
+## تغییرات v0.0.4 (جدید)
+
+صفحه‌ی **نتایج** با زمان هر lap + بهترین lap (ذخیره در localStorage) + دستاورد Under 60s.
+
+**همه‌ی بازی‌ها (v0.0.4)** — `gamekit.js` مشترک + `vendor/howler.min.js` محلی: صدای Howler با SFX خودکار (pickup/collision/game-over از طریق پل MUX)، صفحه‌ی **راهنما**، صفحه‌ی **تنظیمات** (قطع/وصل صدا)، قلاب‌های تست (`render_game_to_text`/`advanceTime`)، **فول‌اسکرین** (کلید F)، و سیستم **دستاوردها**. cache سرویس‌ورکر به v4 ارتقا یافت (آفلاین کامل با vendor).
+
+---
+
+## تغییرات v0.0.3
 
 **شب‌تاز** — mini-map از روی دکمه‌های فرمان جابجا شد (به گوشه‌ی بالا-چپ)؛ بازی روی موبایل قابل‌بازی شد.
 

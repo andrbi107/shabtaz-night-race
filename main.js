@@ -319,7 +319,15 @@ function onLap(car) {
     var lt = state.raceTime - car.lapStartTime;
     if (lt > 800) {                              // ignore spurious first
       state.lapTimes.push(lt);
-      if (state.bestLap === null || lt < state.bestLap) state.bestLap = lt;
+      if (state.bestLap === null || lt < state.bestLap) {
+        state.bestLap = lt;
+        // v0.0.5 — persist global best lap (seconds, 2 decimals) for cross-day record
+        try { ls('shabtaz_bestlap', (lt / 1000).toFixed(2)); } catch (e) {}
+      }
+      // v0.0.5 — achievement: any player lap under 60s
+      if (car === player && lt < 60000 && window.GK) {
+        try { GK.achievement('sub60', 'Under 60s', 'Complete a lap in under 60 seconds'); } catch (e) {}
+      }
     }
     car.lapStartTime = state.raceTime;
     if (car === player) { beep(660, 0.14); if (window.MUX) MUX.bump(); }
@@ -724,6 +732,30 @@ function showFinish() {
     li.appendChild(pos); li.appendChild(name); li.appendChild(time);
     ol.appendChild(li);
   });
+  // v0.0.5 — per-lap splits (seconds, 2 decimals) with best lap highlighted
+  var lapsList = document.getElementById('lapsList');
+  var lapsBlock = document.getElementById('lapsBlock');
+  if (lapsList && lapsBlock) {
+    lapsList.innerHTML = '';
+    if (state.lapTimes.length) {
+      lapsBlock.classList.remove('hide');
+      state.lapTimes.forEach(function (lt, i) {
+        var li = document.createElement('li');
+        var isBest = (lt === state.bestLap);
+        if (isBest) li.className = 'best';
+        if (isBest) {
+          var star = document.createElement('span'); star.className = 'lap-star'; star.textContent = '★';
+          li.appendChild(star);
+        }
+        var lbl = document.createElement('span'); lbl.className = 'lap-n'; lbl.textContent = 'دور ' + fa(i + 1);
+        var t = document.createElement('span'); t.className = 'lap-t'; t.textContent = toFa((lt / 1000).toFixed(2)) + ' ثانیه';
+        li.appendChild(lbl); li.appendChild(t);
+        lapsList.appendChild(li);
+      });
+    } else {
+      lapsBlock.classList.add('hide');
+    }
+  }
   document.getElementById('finishTotal').textContent = formatTime(info.totalTime);
   document.getElementById('finishBest').textContent = info.bestLap !== null ? formatTime(info.bestLap) : '—';
   var rec = document.getElementById('finishRecord');
@@ -852,3 +884,8 @@ document.addEventListener('visibilitychange', function () {
 // expose for deterministic testing (same day => same track)
 window.shabtazTest = { generateTrack: generateTrack, dayNumber: dayNumber, mulberry32: mulberry32 };
 })();
+// ---- v0.0.4 gamekit wiring ----
+if (window.GK) {
+  GK.help({ title: "Shabtaz Night Race", objective: "Complete the laps before the timer runs out. Use nitro on straights.", controls: ["Touch: left/right pedals + steer","Arrows / A,D: steer; W/S: gas-brake; Shift: nitro","P: pause","F: fullscreen"], tips: "Watch the mini-map for your position." });
+  GK.exposeState(function () { try { return { score: (window.S && window.S.score) || window.score || 0, mode: (window.S && window.S.mode) || 'play', wave: (window.S && window.S.wave) || 0 }; } catch (e) { return {}; } });
+}
