@@ -884,8 +884,11 @@ document.addEventListener('visibilitychange', function () {
 // expose for deterministic testing (same day => same track)
 window.shabtazTest = { generateTrack: generateTrack, dayNumber: dayNumber, mulberry32: mulberry32 };
 })();
-// ---- v0.0.4 gamekit wiring ----
+// ---- v0.0.5 gamekit wiring (splash + menu + stats + leaderboard + auto-update) ----
 if (window.GK) {
-  GK.help({ title: "Shabtaz Night Race", objective: "Complete the laps before the timer runs out. Use nitro on straights.", controls: ["Touch: left/right pedals + steer","Arrows / A,D: steer; W/S: gas-brake; Shift: nitro","P: pause","F: fullscreen"], tips: "Watch the mini-map for your position." });
+  GK.boot({ title: "Shabtaz Night Race", tagline: "Nighttime lap racer", theme: "#0a0e1a" });
+  GK.help({ title: "Shabtaz Night Race", objective: "Complete the laps before the timer runs out. Use nitro on straights.", controls: ["Touch: left/right pedals + steer","Arrows / A,D: steer; W/S: gas-brake; Shift: nitro","P: pause","F: fullscreen"], tips: "Watch the mini-map for your position. Best lap is saved." });
   GK.exposeState(function () { try { return { score: (window.S && window.S.score) || window.score || 0, mode: (window.S && window.S.mode) || 'play', wave: (window.S && window.S.wave) || 0 }; } catch (e) { return {}; } });
+  GK._manualRecord = false;
+  setTimeout(function () { GK.ready(); }, 600);
 }
